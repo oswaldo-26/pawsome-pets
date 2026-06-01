@@ -51,7 +51,7 @@
                             ->where('is_read', false)
                             ->count();
                     @endphp
-                    <a href="{{ url('/dashboard') }}" class="nav-notif-btn" title="Notifications">
+                    <a href="{{ route('notifications.index') }}" class="nav-notif-btn" title="Notifications">
                         🔔
                         @if($unread > 0)
                             <span class="nav-notif-badge">{{ $unread }}</span>

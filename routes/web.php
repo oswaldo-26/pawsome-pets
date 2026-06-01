@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Admin\PetController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Models\Pet;
 use App\Models\AdoptionRequest;
 use App\Models\Notification;
+use App\Models\Contact;
+use App\Models\Rating;
 
 Route::get('/', function () {
     return view('home', [
@@ -14,6 +17,8 @@ Route::get('/', function () {
             'available' => Pet::where('status', 'available')->count(),
             'adopted' => Pet::where('status', 'adopted')->count(),
         ],
+        'rating' => round(Rating::avg('rating') ?? 0, 1),
+        'ratingCount' => Rating::count(),
     ]);
 });
 
@@ -62,11 +67,19 @@ Route::get('/contact', function () {
 });
 
 Route::post('/contact', function () {
-    request()->validate([
+    $data = request()->validate([
         'name' => ['required', 'string', 'max:100'],
         'email' => ['required', 'email', 'max:150'],
         'subject' => ['required', 'string', 'max:120'],
         'message' => ['required', 'string', 'max:1200'],
+    ]);
+
+    Contact::create([
+        'user_id' => auth()->id(),
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'subject' => $data['subject'],
+        'message' => $data['message'],
     ]);
 
     session()->flash('success', 'Thanks — your message has been sent. We will reply shortly.');
@@ -79,12 +92,18 @@ Route::get('/rate', function () {
 });
 
 Route::post('/rate', function () {
-    request()->validate([
+    $data = request()->validate([
         'rating' => ['required', 'integer', 'min:1', 'max:5'],
         'comments' => ['nullable', 'string', 'max:800'],
     ]);
 
-    session()->flash('success', 'Thanks for your feedback — we appreciate it!');
+    if (auth()->check()) {
+        $data['user_id'] = auth()->id();
+    }
+
+    Rating::create($data);
+
+    session()->flash('success', 'Thanks for your feedback — your rating has been saved.');
 
     return redirect('/rate');
 });
@@ -149,6 +168,21 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/dashboard');
     })->name('adoption.store');
 
+    Route::get('/notifications', function () {
+        $user = auth()->user();
+
+        $notifications = Notification::where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        $unreadNotifications = $notifications->where('is_read', false)->count();
+
+        return view('notifications.index', [
+            'notifications' => $notifications,
+            'unreadNotifications' => $unreadNotifications,
+        ]);
+    })->name('notifications.index');
+
     Route::post('/notifications/read-all', function () {
         Notification::where('user_id', auth()->id())
             ->update(['is_read' => true]);
@@ -157,7 +191,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('notifications.readAll');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard', [
             'totalPets' => Pet::count(),
@@ -177,7 +211,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
                 ->take(10)
                 ->get(),
         ]);
-    })->name('admin.dashboard');
+    })->name('dashboard');
 
     Route::patch('/adoption/{id}/approve', function ($id) {
         $adoptionRequest = AdoptionRequest::findOrFail($id);
@@ -201,7 +235,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         session()->flash('success', 'Adoption request approved and applicant notified!');
 
         return back();
-    })->name('admin.approve');
+    })->name('approve');
 
     Route::patch('/adoption/{id}/reject', function ($id) {
         $adoptionRequest = AdoptionRequest::findOrFail($id);
@@ -223,13 +257,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         session()->flash('success', 'Adoption request rejected and applicant notified.');
 
         return back();
-    })->name('admin.reject');
+    })->name('reject');
 
-    Route::delete('/pets/{id}', function ($id) {
-        Pet::findOrFail($id)->delete();
-
-        session()->flash('success', 'Pet removed successfully.');
-
-        return back();
-    })->name('admin.pets.destroy');
+    Route::resource('pets', PetController::class)->except(['index', 'show']);
 });

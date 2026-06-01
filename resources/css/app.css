@@ -1127,6 +1127,47 @@ body {
     min-height: 100px;
 }
 
+.form-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+.form-check-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: flex-start;
+    grid-column: 1 / -1;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-size: 0.93rem;
+    color: var(--charcoal);
+}
+
+.form-check input {
+    width: auto;
+    margin: 0;
+}
+
+.form-note {
+    margin-top: 0.35rem;
+    color: var(--slate);
+    font-size: 0.88rem;
+}
+
 .btn-primary {
     background: var(--teal);
     color: var(--white);

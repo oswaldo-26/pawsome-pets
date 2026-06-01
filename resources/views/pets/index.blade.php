@@ -49,7 +49,7 @@
                 <div class="pet-card">
                     <div style="position:relative;">
                         @if($pet->photo)
-                            <img src="{{ preg_match('/^https?:\/\//', $pet->photo) ? $pet->photo : asset('images/' . $pet->photo) }}" alt="{{ $pet->name }}" style="width:100%;height:220px;object-fit:cover;">
+                            <img src="{{ $pet->photo_url }}" alt="{{ $pet->name }}" style="width:100%;height:220px;object-fit:cover;">
                         @else
                             <div class="pet-card-img-placeholder">
                                 <span>{{ $pet->species === 'dog' ? '🐶' : ($pet->species === 'cat' ? '🐱' : '🐹') }}</span>

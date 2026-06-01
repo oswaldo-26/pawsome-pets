@@ -31,7 +31,7 @@
                         <div class="hero-stat-label">Happy Adoptions</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-num">5★</div>
+                        <div class="hero-stat-num">{{ $rating ?? '0.0' }}★</div>
                         <div class="hero-stat-label">Shelter Rating</div>
                     </div>
                 </div>

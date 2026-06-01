@@ -18,11 +18,13 @@
                 <div class="contact-details">
                     <div>
                         <strong>Email</strong>
-                        <a href="mailto:hello@pawsomepets.com">hello@pawsomepets.com</a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pawsomepets@gmail.com" target="_blank">
+                            pawsomepets@gmail.com
+                        </a>
                     </div>
                     <div>
                         <strong>Phone</strong>
-                        <a href="tel:+18001234567">(800) 123-4567</a>
+                        <a href="tel:+18001234567">0912 345 6789</a>
                     </div>
                     <div>
                         <strong>Visit</strong>

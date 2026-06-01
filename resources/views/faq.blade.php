@@ -48,7 +48,7 @@
                     </div>
                     <div>
                         <strong>Phone</strong>
-                        <a href="tel:+18001234567">(800) 123-4567</a>
+                        <a href="tel:+18001234567">0912 345 6789</a>
                     </div>
                     <div>
                         <strong>Hours</strong>

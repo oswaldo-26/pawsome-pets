@@ -17,7 +17,7 @@
                     <p>{{ auth()->user()->name }} · {{ now()->format('F d, Y') }}</p>
                 </div>
             </div>
-            <a href="{{ url('/admin/pets/create') }}" class="btn-coral">+ Add New Pet</a>
+            <a href="{{ route('admin.pets.create') }}" class="btn-coral">+ Add New Pet</a>
         </div>
 
         <div class="dashboard-stats">
@@ -208,10 +208,10 @@
                             <p class="admin-pet-row-meta">{{ ucfirst($pet->species) }} · {{ ucfirst($pet->status) }}</p>
                         </div>
                         <div class="admin-pet-row-actions">
-                            <a href="{{ url('/admin/pets/' . $pet->id . '/edit') }}"
+                            <a href="{{ route('admin.pets.edit', $pet) }}"
                                class="admin-icon-btn admin-icon-btn--edit" title="Edit">✏️</a>
                             <form method="POST"
-                                  action="{{ url('/admin/pets/' . $pet->id) }}"
+                                  action="{{ route('admin.pets.destroy', $pet) }}"
                                   style="display:inline;"
                                   onsubmit="return confirm('Remove {{ $pet->name }}?')">
                                 @csrf

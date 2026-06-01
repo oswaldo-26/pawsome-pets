@@ -139,44 +139,6 @@
                     </div>
                 </div>
 
-                <div class="dashboard-card">
-                    <div class="dashboard-card-header">
-                        <h3 class="dashboard-card-title">🔔 Notifications</h3>
-                        @if(($notifications ?? collect())->where('is_read', false)->count() > 0)
-                            <form method="POST" action="{{ url('/notifications/read-all') }}">
-                                @csrf
-                                <button type="submit" class="notif-mark-all">Mark all read</button>
-                            </form>
-                        @endif
-                    </div>
-
-                    @forelse($notifications ?? [] as $notif)
-                    <div class="notif-item {{ $notif->is_read ? '' : 'notif-item--unread' }}">
-                        <div class="notif-icon notif-icon--{{ $notif->type }}">
-                            @switch($notif->type)
-                                @case('approved')  ✅ @break
-                                @case('rejected')  ❌ @break
-                                @case('pending')   ⏳ @break
-                                @case('completed') 🏡 @break
-                            @endswitch
-                        </div>
-                        <div class="notif-body">
-                            <p class="notif-title">{{ $notif->title }}</p>
-                            <p class="notif-message">{{ $notif->message }}</p>
-                            <span class="notif-time">{{ $notif->created_at->diffForHumans() }}</span>
-                        </div>
-                        @if(!$notif->is_read)
-                            <div class="notif-dot"></div>
-                        @endif
-                    </div>
-                    @empty
-                    <div class="dashboard-empty" style="padding:1.5rem 0;">
-                        <span>🔔</span>
-                        <p style="margin-top:0.5rem;">No notifications yet.</p>
-                    </div>
-                    @endforelse
-                </div>
-
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@
             @forelse($pets as $pet)
                 <a href="{{ url('/pets/' . $pet->id) }}" class="gallery-card">
                     @if($pet->photo)
-                        <img src="{{ preg_match('/^https?:\/\//', $pet->photo) ? $pet->photo : asset('images/' . $pet->photo) }}" alt="{{ $pet->name }}">
+                        <img src="{{ $pet->photo_url }}" alt="{{ $pet->name }}">
                     @else
                         <div class="pet-card-img-placeholder">
                             <span>{{ $pet->species === 'dog' ? '🐶' : ($pet->species === 'cat' ? '🐱' : '🐹') }}</span>
