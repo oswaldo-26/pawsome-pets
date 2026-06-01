@@ -79,6 +79,12 @@
                 <div class="section-subtitle" style="margin-top: 1rem;">No pets match your filters yet. Try adjusting the species, age group, or gender.</div>
             @endforelse
         </div>
+
+        @if($pets->hasPages())
+            <div class="pagination-container">
+                {{ $pets->appends(request()->query())->links('pagination.custom') }}
+            </div>
+        @endif
     </div>
 </section>
 @endsection

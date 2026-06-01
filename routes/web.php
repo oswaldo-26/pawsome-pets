@@ -39,7 +39,7 @@ Route::get('/pets', function () {
     }
 
     return view('pets.index', [
-        'pets' => $query->get(),
+        'pets' => $query->paginate(10),
     ]);
 });
 
