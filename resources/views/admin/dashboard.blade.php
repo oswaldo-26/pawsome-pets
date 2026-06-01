@@ -17,7 +17,10 @@
                     <p>{{ auth()->user()->name }} · {{ now()->format('F d, Y') }}</p>
                 </div>
             </div>
-            <a href="{{ route('admin.pets.create') }}" class="btn-coral">+ Add New Pet</a>
+            <div class="dashboard-header-actions">
+                <a href="{{ route('admin.reports.index') }}" class="btn-coral">View Reports</a>
+                <a href="{{ route('admin.pets.create') }}" class="btn-coral">+ Add New Pet</a>
+            </div>
         </div>
 
         <div class="dashboard-stats">

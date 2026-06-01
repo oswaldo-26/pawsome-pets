@@ -1149,17 +1149,34 @@ body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    background: var(--cream);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 0.9rem 1rem;
-    font-size: 0.93rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
     color: var(--charcoal);
 }
 
-.form-check input {
-    width: auto;
+.form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
     margin: 0;
+    accent-color: var(--teal);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.form-check label,
+.form-check span {
+    cursor: pointer;
+    user-select: none;
+}
+
+.form-check input[type="checkbox"]:focus-visible {
+    outline: 2px solid rgba(33, 150, 143, 0.4);
+    outline-offset: 2px;
+}
+
+.form-check input[type="checkbox"]:checked {
+    background: var(--teal);
+    border-color: var(--teal);
 }
 
 .form-note {
@@ -1521,20 +1538,24 @@ body {
 .form-check {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 1.25rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .form-check input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     accent-color: var(--teal);
     cursor: pointer;
+    border-radius: 4px;
 }
 
-.form-check label {
-    font-size: 0.85rem;
+.form-check label,
+.form-check span {
+    font-size: 0.95rem;
     color: var(--charcoal);
+    cursor: pointer;
+    user-select: none;
     cursor: pointer;
     font-weight: 400;
     text-transform: none;

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Admin\PetController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Models\Pet;
 use App\Models\AdoptionRequest;
@@ -87,27 +88,6 @@ Route::post('/contact', function () {
     return redirect('/contact');
 });
 
-Route::get('/rate', function () {
-    return view('rate');
-});
-
-Route::post('/rate', function () {
-    $data = request()->validate([
-        'rating' => ['required', 'integer', 'min:1', 'max:5'],
-        'comments' => ['nullable', 'string', 'max:800'],
-    ]);
-
-    if (auth()->check()) {
-        $data['user_id'] = auth()->id();
-    }
-
-    Rating::create($data);
-
-    session()->flash('success', 'Thanks for your feedback — your rating has been saved.');
-
-    return redirect('/rate');
-});
-
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -135,6 +115,33 @@ Route::middleware(['auth'])->group(function () {
             'unreadNotifications' => $unreadNotifications,
         ]);
     })->name('dashboard');
+
+    Route::get('/rate', function () {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return view('rate');
+    })->name('rate');
+
+    Route::post('/rate', function () {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        $data = request()->validate([
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'comments' => ['nullable', 'string', 'max:800'],
+        ]);
+
+        $data['user_id'] = auth()->id();
+
+        Rating::create($data);
+
+        session()->flash('success', 'Thanks for your feedback — your rating has been saved.');
+
+        return redirect('/rate');
+    });
 
     Route::get('/adoption/{id}/apply', function ($id) {
         $pet = Pet::findOrFail($id);
@@ -193,6 +200,16 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
+        AdoptionRequest::where('status', 'approved')
+            ->whereHas('pet', function ($query) {
+                $query->where('status', '!=', 'adopted');
+            })
+            ->with('pet')
+            ->get()
+            ->each(function ($request) {
+                $request->pet->update(['status' => 'adopted']);
+            });
+
         return view('admin.dashboard', [
             'totalPets' => Pet::count(),
             'availablePets' => Pet::where('status', 'available')->count(),
@@ -215,11 +232,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::patch('/adoption/{id}/approve', function ($id) {
         $adoptionRequest = AdoptionRequest::findOrFail($id);
+        $pet = Pet::findOrFail($adoptionRequest->pet_id);
 
         $adoptionRequest->update([
             'status' => 'approved',
             'reviewed_at' => now(),
         ]);
+
+        $pet->status = 'adopted';
+        $pet->save();
 
         Notification::create([
             'user_id' => $adoptionRequest->user_id,
@@ -229,8 +250,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
             'type' => 'approved',
             'is_read' => false,
         ]);
-
-        Pet::where('id', $adoptionRequest->pet_id)->update(['status' => 'pending']);
 
         session()->flash('success', 'Adoption request approved and applicant notified!');
 
@@ -258,6 +277,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
         return back();
     })->name('reject');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/export/{format}', [ReportController::class, 'export'])->name('reports.export');
 
     Route::resource('pets', PetController::class)->except(['index', 'show']);
 });

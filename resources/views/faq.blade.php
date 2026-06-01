@@ -44,7 +44,7 @@
                 <div class="support-contact-details">
                     <div>
                         <strong>Email</strong>
-                        <a href="mailto:hello@pawsomepets.com">hello@pawsomepets.com</a>
+                        <a href="mailto:hello@pawsomepets.com">pawsomepets@gmail.com</a>
                     </div>
                     <div>
                         <strong>Phone</strong>

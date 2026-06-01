@@ -37,9 +37,11 @@
             <x-nav-link href="{{ url('/about') }}" :active="request()->is('about*')">
                 About Us
             </x-nav-link>
-            <x-nav-link href="{{ url('/rate') }}" :active="request()->is('rate*')">
-                Rate Us
-            </x-nav-link>
+            @if(! auth()->check() || auth()->user()->role !== 'admin')
+                <x-nav-link href="{{ url('/rate') }}" :active="request()->is('rate*')">
+                    Rate Us
+                </x-nav-link>
+            @endif
         </ul>
 
         <div class="nav-actions">

@@ -18,9 +18,7 @@
                 <div class="contact-details">
                     <div>
                         <strong>Email</strong>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pawsomepets@gmail.com" target="_blank">
-                            pawsomepets@gmail.com
-                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pawsomepets@gmail.com" target="_blank">pawsomepets@gmail.com</a>
                     </div>
                     <div>
                         <strong>Phone</strong>
