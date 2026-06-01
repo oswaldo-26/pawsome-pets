@@ -157,7 +157,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('notifications.readAll');
 });
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard', [
             'totalPets' => Pet::count(),
