@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 .env
 .env.*
+!.env.example
 storage/logs
 storage/framework/cache/data
 storage/framework/sessions
