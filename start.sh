@@ -29,6 +29,11 @@ php artisan optimize:clear
 # Run migrations.
 php artisan migrate --force
 
+# Seed the database if there are no pets yet.
+if [ "$(php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); echo \App\Models\Pet::count();')" = "0" ]; then
+  php artisan db:seed --force
+fi
+
 # Start the PHP built-in server on the Railway-assigned port or default to 8080.
 PORT="${PORT:-8080}"
 exec php -S 0.0.0.0:"$PORT" -t public

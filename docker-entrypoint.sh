@@ -23,6 +23,11 @@ if ! grep -q '^APP_KEY=base64:' .env; then
 fi
 
 php artisan migrate --force
+
+if [ "$(php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); echo \App\Models\Pet::count();')" = "0" ]; then
+  php artisan db:seed --force
+fi
+
 php artisan optimize:clear
 
 # Ensure PORT is defined and start the PHP server.
