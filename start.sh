@@ -34,6 +34,14 @@ if [ "$(php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php
   php artisan db:seed --force
 fi
 
+# Ensure storage link and writable dirs so runtime uploads work
+if [ -d public/storage ] && [ ! -L public/storage ]; then
+  rm -rf public/storage
+fi
+php artisan storage:link || true
+mkdir -p storage/app/public/pets
+chmod -R 0777 storage bootstrap/cache public
+
 # Start the PHP built-in server on the Railway-assigned port or default to 8080.
 PORT="${PORT:-8080}"
 exec php -S 0.0.0.0:"$PORT" -t public

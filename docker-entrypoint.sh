@@ -29,6 +29,13 @@ if [ "$(php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php
 fi
 
 php artisan optimize:clear
+# Ensure storage link and writable dirs so runtime uploads work
+if [ -d public/storage ] && [ ! -L public/storage ]; then
+  rm -rf public/storage
+fi
+php artisan storage:link || true
+mkdir -p storage/app/public/pets
+chmod -R 0777 storage bootstrap/cache public
 
 # Ensure PORT is defined and start the PHP server.
 PORT="${PORT:-8080}"
