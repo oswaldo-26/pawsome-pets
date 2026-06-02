@@ -24,4 +24,5 @@ fi
 
 php artisan migrate --force
 
-exec "$@"
+# Start PHP server using the actual PORT env var.
+exec php -S 0.0.0.0:${PORT:-8080} -t public public/index.php
