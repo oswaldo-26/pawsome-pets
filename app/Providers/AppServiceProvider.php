@@ -32,13 +32,17 @@ class AppServiceProvider extends ServiceProvider
                 SymfonyRequest::HEADER_X_FORWARDED_PREFIX
             );
 
-            URL::forceScheme('https');
+            $appUrl = env('APP_URL', Request::getSchemeAndHttpHost());
+            if ($appUrl && str_starts_with($appUrl, 'http://')) {
+                $appUrl = preg_replace('/^http:/i', 'https:', $appUrl);
+            }
 
-            if (Request::server('HTTP_HOST')) {
-                $appUrl = Request::getSchemeAndHttpHost();
+            if ($appUrl) {
                 config(['app.url' => $appUrl]);
                 URL::forceRootUrl($appUrl);
             }
+
+            URL::forceScheme('https');
         }
     }
 }
