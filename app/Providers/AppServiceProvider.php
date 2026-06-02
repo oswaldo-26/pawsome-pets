@@ -22,27 +22,38 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (! app()->environment('local') && ! $this->app->runningInConsole()) {
-            SymfonyRequest::setTrustedProxies(
-                ['*'],
-                SymfonyRequest::HEADER_X_FORWARDED_FOR |
-                SymfonyRequest::HEADER_X_FORWARDED_HOST |
-                SymfonyRequest::HEADER_X_FORWARDED_PROTO |
-                SymfonyRequest::HEADER_X_FORWARDED_PORT |
-                SymfonyRequest::HEADER_X_FORWARDED_PREFIX
-            );
+        if ($this->app->runningInConsole()) {
+            return;
+        }
 
-            $appUrl = env('APP_URL', Request::getSchemeAndHttpHost());
-            if ($appUrl && str_starts_with($appUrl, 'http://')) {
+        SymfonyRequest::setTrustedProxies(
+            ['*'],
+            SymfonyRequest::HEADER_X_FORWARDED_FOR |
+            SymfonyRequest::HEADER_X_FORWARDED_HOST |
+            SymfonyRequest::HEADER_X_FORWARDED_PROTO |
+            SymfonyRequest::HEADER_X_FORWARDED_PORT |
+            SymfonyRequest::HEADER_X_FORWARDED_PREFIX
+        );
+
+        if ($host = Request::server('HTTP_HOST')) {
+            $scheme = Request::getScheme();
+            if ($host !== 'localhost' && $host !== '127.0.0.1') {
+                $scheme = 'https';
+            }
+
+            $appUrl = config('app.url') ?: env('APP_URL', '');
+            if (! $appUrl || str_contains($appUrl, 'localhost')) {
+                $appUrl = $scheme . '://' . $host;
+            }
+
+            if (str_starts_with($appUrl, 'http://')) {
                 $appUrl = preg_replace('/^http:/i', 'https:', $appUrl);
             }
 
-            if ($appUrl) {
-                config(['app.url' => $appUrl]);
-                URL::forceRootUrl($appUrl);
-            }
-
-            URL::forceScheme('https');
+            config(['app.url' => rtrim($appUrl, '/'), 'app.asset_url' => rtrim($appUrl, '/')]);
+            URL::forceRootUrl($appUrl);
         }
+
+        URL::forceScheme('https');
     }
 }
