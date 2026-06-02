@@ -46,20 +46,6 @@ PAWsome Pets is a Laravel-based web application built as a final project for a w
 
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Framework | Laravel 11 |
-| Language | PHP 8.2+ |
-| Database | SQLite |
-| Frontend | Blade Templates + Vanilla CSS |
-| Authentication | Laravel Sanctum |
-| PDF Export | barryvdh/laravel-dompdf |
-| Asset Bundling | Vite |
-
----
-
 ## Database Structure
 
 | Table | Description |
