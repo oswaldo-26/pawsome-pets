@@ -3,9 +3,9 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-scripts --no-progress --no-interaction
+RUN mkdir -p bootstrap/cache && composer install --no-dev --prefer-dist --no-scripts --no-progress --no-interaction
 COPY . /app
-RUN composer dump-autoload --optimize
+RUN mkdir -p bootstrap/cache && composer dump-autoload --optimize
 
 FROM node:20 AS assets
 WORKDIR /app
@@ -29,6 +29,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
+RUN mkdir -p bootstrap/cache
 COPY --from=vendor /app /var/www/html
 COPY --from=assets /app/public/build /var/www/html/public/build
 COPY docker-entrypoint.sh /var/www/html/docker-entrypoint.sh
