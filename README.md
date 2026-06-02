@@ -1,58 +1,191 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  PAWsome Pets — Pet Adoption Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A warm, pet adoption platform built with **Laravel** that connects rescue animals with forever homes. Adopters can browse pets, submit adoption applications, and receive notifications. Admins can manage pets, review requests, and export reports.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##  Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Database Structure](#database-structure)
+- [REST API](#rest-api)
+- [Setup & Installation](#setup--installation)
+- [Default Credentials](#default-credentials)
+- [Team](#team)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## About the Project
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+PAWsome Pets is a Laravel-based web application built as a final project for a web development course. The system allows a pet adoption shelter to manage their available animals and process adoption requests through a clean, user-friendly interface.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Features
 
-## Agentic Development
+###  Adopter
+- Register and log in securely
+- Browse available pets with species, age, and gender filters
+- View detailed pet profiles
+- Submit adoption applications
+- Track application status on personal dashboard
+- Receive notifications when requests are approved or rejected
+- Rate the shelter and send contact messages
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+###  Admin
+- Manage pets — add, edit, delete with photo upload
+- Review and approve or reject adoption requests
+- Send automatic notifications to adopters
+- View reports and export as PDF or CSV
+- View all ratings and contact messages
 
+###  REST API
+- RESTful API 
+- Supports GET, POST, PUT, DELETE methods
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Laravel 11 |
+| Language | PHP 8.2+ |
+| Database | SQLite |
+| Frontend | Blade Templates + Vanilla CSS |
+| Authentication | Laravel Sanctum |
+| PDF Export | barryvdh/laravel-dompdf |
+| Asset Bundling | Vite |
+
+---
+
+## Database Structure
+
+| Table | Description |
+|---|---|
+| `users` | Adopters and admin accounts with role field |
+| `pets` | All pet listings with species, breed, traits, and status |
+| `adoption_requests` | Applications submitted by adopters |
+| `notifs` | Notifications sent to adopters on status changes |
+| `ratings` | Shelter ratings submitted by users |
+| `contacts` | Contact form submissions |
+
+---
+
+## REST API
+
+Base URL: `http://localhost:8000/api`
+
+### Public Endpoints
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/login` | Get API token |
+| GET | `/api/pets` | List all pets |
+| GET | `/api/pets/{id}` | Get single pet |
+
+### Protected Endpoints (Bearer Token required)
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/user` | Get authenticated user |
+| GET | `/api/adoption-requests` | Get user's requests |
+| POST | `/api/adoption-requests` | Submit adoption request |
+| PUT | `/api/adoption-requests/{id}` | Approve/reject request (admin) |
+| POST | `/api/pets` | Create pet (admin) |
+| PUT | `/api/pets/{id}` | Update pet (admin) |
+| DELETE | `/api/pets/{id}` | Delete pet (admin) |
+| GET | `/api/notifications` | Get user notifications |
+| POST | `/api/notifications/read-all` | Mark all as read |
+
+---
+
+## Setup & Installation
+
+### Requirements
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- Git
+
+### Steps
+
+**1. Clone the repository**
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/YOUR-USERNAME/pawsome-pets.git
+cd pawsome-pets
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+**2. Install dependencies**
+```bash
+composer install
+npm install
+```
 
-## Contributing
+**3. Set up environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**4. Configure database**
 
-## Code of Conduct
+Open `.env` and make sure:
+```
+DB_CONNECTION=sqlite
+SESSION_DRIVER=file
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Then create the SQLite file:
+```bash
+# Mac/Linux
+touch database/database.sqlite
 
-## Security Vulnerabilities
+# Windows
+type nul > database\database.sqlite
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**5. Run migrations and seed**
+```bash
+php artisan migrate:fresh --seed
+php artisan storage:link
+```
 
-## License
+**6. Start the development server**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Open two terminals:
+```bash
+# Terminal 1
+php artisan serve
+
+# Terminal 2
+npm run dev
+```
+
+**7. Visit the app**
+```
+http://localhost:8000
+```
+
+---
+
+## Default Credentials
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@pawsome.com | password |
+| Adopter | lebron@test.com | password |
+| Adopter | josephine@test.com | password |
+
+---
+
+## Team
+
+| Name |
+|---|
+| [Dan Justin Ferrer] |
+| [Lee Harvey Oswald Munar] |
+| [Jofil Operaña] |
+
+---
+
+> *"Every pet deserves a loving home, and every home deserves a loving pet."* 🐾
