@@ -1,1 +1,1 @@
-web: sh -lc 'cp .env.example .env 2>/dev/null || true && mkdir -p database && touch database/database.sqlite && php artisan key:generate --force && php artisan migrate --force && php -S 0.0.0.0:$PORT -t public public/index.php'
+web: sh start.sh
