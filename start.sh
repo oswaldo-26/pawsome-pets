@@ -27,5 +27,5 @@ fi
 # Apply database migrations so the app has the correct schema.
 php artisan migrate --force
 
-# Start Laravel on the Railway-assigned port or default to 8000.
-exec php artisan serve --host=0.0.0.0 --port="${PORT:-8000}"
+# Start PHP built-in server bound to the Railway-assigned port.
+exec php -S 0.0.0.0:${PORT:-8000} -t public public/index.php
