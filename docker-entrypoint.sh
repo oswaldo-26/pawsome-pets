@@ -26,4 +26,4 @@ php artisan migrate --force
 
 # Ensure PORT is defined and start the PHP server.
 PORT="${PORT:-8080}"
-exec php -S 0.0.0.0:"$PORT" -t public public/index.php
+exec php -S 0.0.0.0:"$PORT" -t public
