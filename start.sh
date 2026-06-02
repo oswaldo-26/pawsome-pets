@@ -19,6 +19,9 @@ fi
 # Generate APP_KEY if not already set in environment.
 if [ -z "${APP_KEY:-}" ]; then
   php artisan key:generate --force
+  if [ -f .env ]; then
+    export APP_KEY=$(grep '^APP_KEY=' .env | cut -d '=' -f2-)
+  fi
 fi
 
 # Apply database migrations so the app has the correct schema.
