@@ -1,10 +1,19 @@
 #!/usr/bin/env sh
 set -e
+cd "$(dirname "$0")"
+
+# Ensure environment file exists so Laravel commands can write APP_KEY.
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
 
 # Ensure SQLite is present when the app is configured for sqlite.
 if [ -z "${DB_CONNECTION:-}" ] || [ "${DB_CONNECTION}" = "sqlite" ]; then
   mkdir -p database
   touch database/database.sqlite
+  if ! grep -q '^DB_DATABASE=' .env; then
+    printf 'DB_DATABASE=database/database.sqlite\n' >> .env
+  fi
 fi
 
 # Generate APP_KEY if not already set in environment.
