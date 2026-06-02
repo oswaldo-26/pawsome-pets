@@ -26,5 +26,5 @@ fi
 # Run migrations.
 php artisan migrate --force
 
-# Start Laravel on the Railway-assigned port or default to 8080.
-exec php artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
+# Start the PHP built-in server on the Railway-assigned port or default to 8080.
+exec php -S 0.0.0.0:"${PORT:-8080}" -t public public/index.php
