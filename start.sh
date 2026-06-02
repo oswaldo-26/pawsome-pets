@@ -30,4 +30,5 @@ php artisan optimize:clear
 php artisan migrate --force
 
 # Start the PHP built-in server on the Railway-assigned port or default to 8080.
-exec php -S 0.0.0.0:"${PORT:-8080}" -t public public/index.php
+PORT="${PORT:-8080}"
+exec php -S 0.0.0.0:"$PORT" -t public public/index.php
