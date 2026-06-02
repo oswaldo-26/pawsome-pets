@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - PORT=8080
+    volumes:
+      - .:/var/www/html:cached
+    command: ["/var/www/html/docker-entrypoint.sh", "php", "-S", "0.0.0.0:8080", "-t", "public", "public/index.php"]

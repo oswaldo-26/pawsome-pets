@@ -23,7 +23,11 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/_health', function () {
+Route::match(['GET', 'HEAD'], '/_health', function () {
+    return response('ok', 200);
+});
+
+Route::match(['GET', 'HEAD'], '/up', function () {
     return response('ok', 200);
 });
 
