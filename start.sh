@@ -18,8 +18,8 @@ if [ -z "${DB_CONNECTION:-}" ] || [ "${DB_CONNECTION}" = "sqlite" ]; then
   fi
 fi
 
-# Ensure APP_KEY exists.
-if ! grep -q '^APP_KEY=' .env; then
+# Ensure APP_KEY exists and is not empty.
+if ! grep -q '^APP_KEY=base64:' .env; then
   php artisan key:generate --force
 fi
 
