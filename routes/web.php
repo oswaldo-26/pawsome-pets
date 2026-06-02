@@ -23,6 +23,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/_health', function () {
+    return response('ok', 200);
+});
+
 Route::get('/pets', function () {
     $query = Pet::query();
 
