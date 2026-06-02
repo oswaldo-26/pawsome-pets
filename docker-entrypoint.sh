@@ -23,6 +23,7 @@ if ! grep -q '^APP_KEY=base64:' .env; then
 fi
 
 php artisan migrate --force
+php artisan optimize:clear
 
 # Ensure PORT is defined and start the PHP server.
 PORT="${PORT:-8080}"
