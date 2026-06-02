@@ -38,4 +38,4 @@ RUN chmod +x /var/www/html/docker-entrypoint.sh
 EXPOSE 8080
 ENV PORT=8080
 ENTRYPOINT ["/var/www/html/docker-entrypoint.sh"]
-CMD ["php", "-S", "0.0.0.0:${PORT}", "-t", "public", "public/index.php"]
+CMD ["sh", "-lc", "php -S 0.0.0.0:${PORT:-8080} -t public public/index.php"]
