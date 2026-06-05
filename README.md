@@ -2,6 +2,8 @@
 
 A warm, pet adoption platform built with **Laravel** that connects rescue animals with forever homes. Adopters can browse pets, submit adoption applications, and receive notifications. Admins can manage pets, review requests, and export reports.
 
+Access PAWsome Pets here: https://pawsome-pets-production.up.railway.app/
+
 ---
 
 ##  Table of Contents
@@ -97,7 +99,7 @@ Base URL: `http://localhost:8000/api`
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/YOUR-USERNAME/pawsome-pets.git
+git clone https://github.com/oswaldo-26/pawsome-pets.git
 cd pawsome-pets
 ```
 
