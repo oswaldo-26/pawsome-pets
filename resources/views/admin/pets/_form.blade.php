@@ -21,9 +21,12 @@
     </div>
 
     <div class="form-group">
-        <label for="breed">Breed</label>
-        <input id="breed" name="breed" type="text" value="{{ old('breed', $pet->breed ?? '') }}">
-        @error('breed')<p class="form-error">{{ $message }}</p>@enderror
+    <label class="form-label" for="breed">Breed <span class="form-required">*</span></label>
+        <select
+            class="form-input form-select @error('breed') form-input--error @enderror" id="breed" name="breed" required>
+            <option value="">Select species first...</option>
+        </select>
+        @error('breed')<span class="form-error">{{ $message }}</span>@enderror
     </div>
 
     <div class="form-group">
@@ -88,6 +91,11 @@
             <p class="form-note">Current photo: <strong>{{ basename($pet->photo) }}</strong></p>
         @endif
         @error('photo')<p class="form-error">{{ $message }}</p>@enderror
+    </div>
+
+        <div class="form-group form-group-full">
+        <label class="form-label">Pet Attributes</label>
+        <p class="form-hint">Select all that apply</p>
     </div>
 
     <div class="form-group form-check-grid">
