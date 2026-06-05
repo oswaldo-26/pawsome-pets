@@ -76,29 +76,7 @@
                       class="adoption-form">
                     @csrf
 
-                    <div class="form-section">
-                        <h3 class="form-section-title">👤 Your Information</h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="occupation">Occupation</label>
-                                <input type="text" id="occupation" name="occupation"
-                                       value="{{ old('occupation') }}"
-                                       placeholder="e.g. Teacher, Engineer, Student">
-                                @error('occupation') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="home_type">Home Type</label>
-                                <select id="home_type" name="home_type">
-                                    <option value="">Select home type</option>
-                                    <option value="house"     {{ old('home_type') == 'house'     ? 'selected' : '' }}>House</option>
-                                    <option value="apartment" {{ old('home_type') == 'apartment' ? 'selected' : '' }}>Apartment</option>
-                                    <option value="condo"     {{ old('home_type') == 'condo'     ? 'selected' : '' }}>Condo</option>
-                                    <option value="other"     {{ old('home_type') == 'other'     ? 'selected' : '' }}>Other</option>
-                                </select>
-                                @error('home_type') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <div class="form-section">
                         <h3 class="form-section-title">🏡 Your Home & Lifestyle</h3>
