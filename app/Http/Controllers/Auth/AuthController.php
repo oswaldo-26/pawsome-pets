@@ -43,26 +43,31 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+    $data = $request->validate([
+        'name'        => 'required|string|max:255',
+        'email'       => 'required|email|unique:users,email',
+        'phone'       => 'nullable|string|max:20',
+        'address'     => 'nullable|string|max:255',
+        'occupation'  => 'nullable|string|max:100',
+        'home_type'   => 'nullable|string|in:house,apartment,condo,other',
+        'password'    => 'required|string|min:8|confirmed',
+    ]);
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role' => 'adopter',
-            'phone' => $data['phone'] ?? null,
-            'address' => $data['address'] ?? null,
-        ]);
+    $user = User::create([
+        'name'       => $data['name'],
+        'email'      => $data['email'],
+        'password'   => bcrypt($data['password']),
+        'role'       => 'adopter',
+        'phone'      => $data['phone'] ?? null,
+        'address'    => $data['address'] ?? null,
+        'occupation' => $data['occupation'] ?? null,
+        'home_type'  => $data['home_type'] ?? null,
+    ]);
 
-        Auth::login($user);
+    Auth::login($user);
 
-        return redirect('/dashboard')->with('success', 'Welcome to PAWsome Pets, ' . $user->name . '! 🐾');
+    return redirect('/dashboard')
+        ->with('success', 'Welcome to PAWsome Pets, ' . $user->name . '!');
     }
 
     public function logout(Request $request)
