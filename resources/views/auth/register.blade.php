@@ -75,9 +75,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="address">Home Address <span class="form-optional">(optional)</span></label>
+                        <label for="address">Home Address</label>
                         <input type="text" id="address" name="address" value="{{ old('address') }}"
-                            placeholder="Street, City, Province">
+                        placeholder="Street, City, Province" required>
                         @error('address')
                             <span class="form-error">{{ $message }}</span>
                         @enderror
